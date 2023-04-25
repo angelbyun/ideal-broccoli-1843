@@ -34,13 +34,59 @@ RSpec.describe 'plots index page' do
 
     it 'lists all the names of the plants for each plot' do
       visit "/plots"
-save_and_open_page
+
       expect(page).to have_content(plant_1.name)
       expect(page).to have_content(plant_2.name)
       expect(page).to have_content(plant_3.name)
       expect(page).to have_content(plant_4.name)
       expect(page).to have_content(plant_5.name)
       expect(page).to have_content(plant_6.name)
+    end
+
+    it 'creates a button to remove plant from a plot' do
+      visit "/plots"
+
+      within "#plant-#{plant_1.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_1.id)
+      
+      within "#plant-#{plant_2.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_2.id)
+
+      within "#plant-#{plant_3.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_3.id)
+
+      within "#plant-#{plant_4.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_4.id)
+
+      within "#plant-#{plant_5.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_5.id)
+
+      within "#plant-#{plant_6.id}" do
+        click_button("Remove Plant")
+      end
+
+      expect(current_path).to eq("/plots")
+      expect(page).to_not have_content(plant_6.id)
     end
   end
 end

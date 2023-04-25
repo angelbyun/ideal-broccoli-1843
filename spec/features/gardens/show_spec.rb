@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Plant, type: :model do
+RSpec.describe 'gardens show page' do
   let!(:garden_1) { Garden.create!(name: "Turing Community Garden", organic: true) }
 
   let!(:plot_1) { Plot.create!(number: 5, size: "Large", direction: "East", garden: garden_1) }
@@ -22,16 +22,17 @@ RSpec.describe Plant, type: :model do
     PlotPlant.create!(plot: plot_3, plant: plant_5)
     PlotPlant.create!(plot: plot_3, plant: plant_6)
   end
+  
+  describe 'As a visitor when I visit the gardens show page' do
+    it 'I see a list of plants that are included in that gardens plots and I see this list is unique; this list only includes plants that take less than 100 days to harvest' do
+      visit "/gardens/#{garden_1.id}"
 
-  describe 'relationships' do
-    it { should have_many(:plot_plants) }
-    it { should have_many(:plots).through(:plot_plants) }
-    it { should have_many(:gardens).through(:plots) }
-  end
-
-  describe 'class methods' do
-    it 'should list all of the plants in its garden plots that take less than 100 days to harvest' do
-      expect(Plant.plant_list_by_harvest_date).to eq("Bell Pepper, Tomatoes, Carrots, and Potatoes")
+      expect(page).to have_content(plant_1.name)
+      expect(page).to have_content(plant_2.name)
+      expect(page).to have_content(plant_3.name)
+      expect(page).to have_content(plant_4.name)
+      expect(page).to_not have_content(plant_5.name)
+      expect(page).to_not have_content(plant_6.name)
     end
   end
 end
